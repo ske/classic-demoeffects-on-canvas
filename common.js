@@ -1,4 +1,4 @@
-var Color = /** @class */ (function () {
+var Color = (function () {
     function Color(r, g, b, a) {
         if (a === void 0) { a = 255; }
         this.r = r;
@@ -8,14 +8,14 @@ var Color = /** @class */ (function () {
     }
     return Color;
 }());
-var Point2D = /** @class */ (function () {
+var Point2D = (function () {
     function Point2D(x, y) {
         this.x = x;
         this.y = y;
     }
     return Point2D;
 }());
-var Point3D = /** @class */ (function () {
+var Point3D = (function () {
     function Point3D(x, y, z) {
         this.x = x;
         this.y = y;
@@ -33,13 +33,17 @@ var GetPixel = function (buffer, p) {
     return c;
 };
 var PutPixel = function (buffer, p, c) {
+    if (p.x < 0 || p.y < 0)
+        return;
+    if (p.x > (buffer.width - 1) || p.y > (buffer.height - 1))
+        return;
     var offset = (p.x + p.y * buffer.width) * 4;
     buffer.data[offset] = c.r;
     buffer.data[offset + 1] = c.g;
     buffer.data[offset + 2] = c.b;
     buffer.data[offset + 3] = c.a;
 };
-var Star = /** @class */ (function () {
+var Star = (function () {
     function Star() {
         this.reset();
     }

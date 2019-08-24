@@ -11,13 +11,11 @@ var __extends = (this && this.__extends) || (function () {
         d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
     };
 })();
-///<reference path="common.ts"/>
-///<reference path="starfield.ts"/>
-var HStarfield = /** @class */ (function (_super) {
+var HStarfield = (function (_super) {
     __extends(HStarfield, _super);
     function HStarfield() {
         var _this = _super !== null && _super.apply(this, arguments) || this;
-        _this.direction = -1; // use -1 for opposite direction
+        _this.direction = -1;
         return _this;
     }
     HStarfield.prototype.moveStars = function () {

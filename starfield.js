@@ -1,5 +1,4 @@
-///<reference path="common.ts"/>
-var Starfield = /** @class */ (function () {
+var Starfield = (function () {
     function Starfield(w, h) {
         this.stars = [];
         this.maxStars = 1000;
@@ -27,7 +26,6 @@ var Starfield = /** @class */ (function () {
         var h = Math.round(this.height / 2);
         var hw = Math.round(w / 2);
         var hh = Math.round(h / 2);
-        // spawn withing half screen area rectangle
         star.start.x = Math.round(Math.random() * w) - 1 - hw;
         star.start.y = Math.round(Math.random() * h) - 1 - hh;
         star.start.z = 0;
@@ -46,7 +44,6 @@ var Starfield = /** @class */ (function () {
                     break;
                 }
             }
-            // reuse inactive star
             if (index !== null) {
                 this.randomizeStar(this.stars[index]);
             }
@@ -84,10 +81,6 @@ var Starfield = /** @class */ (function () {
                     if (c > 255)
                         c = 255;
                     var phase = 1;
-                    /*
-                    if (star.position.z > 1 * this.maxZ / 3) phase--;
-                    if (star.position.z > 2 * this.maxZ / 3) phase--;
-                     */
                     _this.drawStar(new Point2D(Math.round(x), Math.round(y)), new Color(c, c, c), phase);
                 }
                 else {
@@ -100,12 +93,6 @@ var Starfield = /** @class */ (function () {
         if (phase === void 0) { phase = 1; }
         switch (phase) {
             case 0:
-                /*
-                PutPixel(this.buffer, new Point2D(p.x+1, p.y+1), c);
-                PutPixel(this.buffer, new Point2D(p.x-1,p.y+1), c);
-                PutPixel(this.buffer, new Point2D(p.x-1,p.y-1), c);
-                PutPixel(this.buffer, new Point2D(p.x+1,p.y-1), c);
-                 */
                 PutPixel(this.buffer, new Point2D(p.x + 2, p.y), c);
                 PutPixel(this.buffer, new Point2D(p.x, p.y + 2), c);
                 PutPixel(this.buffer, new Point2D(p.x - 2, p.y), c);

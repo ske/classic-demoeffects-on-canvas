@@ -43,7 +43,9 @@ const GetPixel = (buffer: ImageData, p: Point2D ): Color => {
 };
 
 const PutPixel = (buffer: ImageData, p: Point2D, c: Color) => {
-    let offset = (p.x + p.y * buffer.width) * 4;
+  if (p.x < 0 || p.y < 0) return;
+  if (p.x > (buffer.width-1) || p.y > (buffer.height-1)) return;
+  let offset = (p.x + p.y * buffer.width) * 4;
     buffer.data[offset] = c.r;
     buffer.data[offset+1] = c.g;
     buffer.data[offset+2] = c.b;
