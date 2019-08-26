@@ -4,21 +4,19 @@ var SinusScroll = (function () {
         this.height = h;
         this.charset = charset;
         this.text = text;
-        this.yPosition = this.height / 2;
-        this.sinusBumps = 2;
+        this.sinusBumps = 4;
         this.actualCharIdx = 0;
         this.generateSinus();
     }
     SinusScroll.prototype.generateSinus = function () {
         this.sinusPositions = [];
-        var margin = SinusScroll.MARGIN_TOP_BOTTOM;
         var i = 0;
-        var a = 0;
         var x = 0;
         var b = (this.sinusBumps * Math.PI) / this.width;
+        var a = 0;
         while (a < (this.sinusBumps * Math.PI)) {
-            var y = Math.round(Math.sin(a) * ((this.height - margin) / 2));
-            this.sinusPositions[i] = new Point2D(x, y + this.height / 2);
+            var y = Math.round(Math.sin(a) * ((this.height - SinusScroll.MARGIN_TOP_BOTTOM) / 2));
+            this.sinusPositions[i] = new Point2D(x, Math.round(y + this.height / 2));
             a += b;
             x++;
             i++;
@@ -31,15 +29,21 @@ var SinusScroll = (function () {
     SinusScroll.prototype.animate = function () {
         this.clearBuffer();
         var wasDraw = false;
-        var o = this.offsetX;
+        var offset = this.offsetX;
+        var hcw = Math.round(Charset.CHAR_WIDTH / 2);
+        var hch = Math.round(Charset.CHAR_HEIGHT / 2);
         for (var i = 0; i < this.text.length; i++) {
             var chr = this.text[i];
-            if (o > 0 && o < this.width) {
-                var pos = this.sinusPositions[o];
-                this.charset.drawTo(this.buffer, chr, pos.x - Charset.CHAR_WIDTH / 2, pos.y - Charset.CHAR_HEIGHT / 2);
-                wasDraw = true;
+            if (offset < 0) {
+                offset += Charset.CHAR_WIDTH;
+                continue;
             }
-            o += Charset.CHAR_WIDTH;
+            var pos = this.sinusPositions[offset];
+            this.charset.drawTo(this.buffer, chr, pos.x - hcw, pos.y - hch);
+            wasDraw = true;
+            offset += Charset.CHAR_WIDTH;
+            if (offset > this.width)
+                break;
         }
         this.offsetX -= SinusScroll.SPEED;
         if (!wasDraw) {
@@ -54,3 +58,4 @@ var SinusScroll = (function () {
     SinusScroll.MARGIN_TOP_BOTTOM = 40;
     return SinusScroll;
 }());
+//# sourceMappingURL=sinusscroll.js.map

@@ -32,7 +32,7 @@ var Demo = (function () {
             _this.init();
             _this.doLoop = true;
             _this.startFn();
-        }, 10);
+        }, Demo.REFRESH_MS * 2);
     };
     Demo.prototype.loop_starfield = function () {
         var _this = this;
@@ -40,9 +40,7 @@ var Demo = (function () {
             this.starfield.animate();
             this.starfield.paint(this.screen);
             if (this.doLoop) {
-                setTimeout(function () {
-                    _this.loop_starfield();
-                }, 5);
+                setTimeout(function () { _this.loop_starfield(); }, Demo.REFRESH_MS);
             }
         }
     };
@@ -52,9 +50,7 @@ var Demo = (function () {
             this.hstarfield.animate();
             this.hstarfield.paint(this.screen);
             if (this.doLoop) {
-                setTimeout(function () {
-                    _this.loop_hstarfield();
-                }, 5);
+                setTimeout(function () { _this.loop_hstarfield(); }, Demo.REFRESH_MS);
             }
         }
     };
@@ -64,9 +60,7 @@ var Demo = (function () {
             this.sinus.animate();
             this.sinus.paint(this.screen);
             if (this.doLoop) {
-                setTimeout(function () {
-                    _this.loop_sinusscroll();
-                }, 5);
+                setTimeout(function () { _this.loop_sinusscroll(); }, Demo.REFRESH_MS);
             }
         }
     };
@@ -86,18 +80,17 @@ var Demo = (function () {
         this.hstarfield = new HStarfield(this.canvas.width, this.canvas.height);
         this.loop_hstarfield();
     };
-    Demo.prototype.start_sinusscroll = function (text) {
+    Demo.prototype.start_sinusscroll = function (charset, text) {
         var _this = this;
         if (!this.firstInit)
             this.init();
-        var charset = new Charset();
-        charset.load("charset_2_v1.png", this.root)
-            .then(function () {
-            _this.doLoop = true;
-            _this.startFn = _this.start_sinusscroll;
-            _this.sinus = new SinusScroll(_this.canvas.width, _this.canvas.height, text, charset);
-            _this.loop_sinusscroll();
-        });
+        this.charset = charset;
+        this.doLoop = true;
+        this.startFn = function () { _this.start_sinusscroll(charset, text); };
+        this.sinus = new SinusScroll(this.canvas.width, this.canvas.height, text, charset);
+        this.loop_sinusscroll();
     };
+    Demo.REFRESH_MS = 5;
     return Demo;
 }());
+//# sourceMappingURL=demo.js.map

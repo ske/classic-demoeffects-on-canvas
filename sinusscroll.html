@@ -26,7 +26,14 @@
 <script type="text/javascript">
   document.addEventListener('DOMContentLoaded', function () {
     let demo = new Demo(document.getElementById('demo'));
-    demo.start_sinusscroll("Hello World! This is a Sinus scroller demo written in TypeScript using HTML Canvas element. Back to the oldschool in 2019! Enjoy!");
+    let charset = new Charset();
+    charset.load("charset_2_v1.png", document.getElementsByTagName("body")[0])
+      .then(function() {
+        demo.start_sinusscroll(
+          charset,
+          "Hello World! This is a Sinus scroller demo written in TypeScript using HTML Canvas element. Back to the oldschool in 2019! Enjoy!"
+        );
+      });
   });
 </script>
 </body>

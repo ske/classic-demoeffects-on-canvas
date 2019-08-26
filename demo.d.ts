@@ -3,6 +3,8 @@
 /// <reference path="sinusscroll.d.ts" />
 /// <reference path="charset.d.ts" />
 declare class Demo {
+    static readonly REFRESH_MS: number;
+    charset: Charset;
     canvas: HTMLCanvasElement;
     root: HTMLElement;
     screen: CanvasRenderingContext2D;
@@ -20,5 +22,5 @@ declare class Demo {
     protected loop_sinusscroll(): void;
     start_starfield(): void;
     start_hstarfield(): void;
-    start_sinusscroll(text: string): void;
+    start_sinusscroll(charset: Charset, text: string): void;
 }

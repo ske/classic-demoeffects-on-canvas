@@ -8,7 +8,6 @@ declare class SinusScroll {
     protected height: number;
     protected text: string;
     protected offsetX: number;
-    protected yPosition: number;
     protected sinusBumps: number;
     protected actualCharIdx: number;
     protected sinusPositions: Point2D[];

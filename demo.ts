@@ -4,6 +4,10 @@
 ///<reference path="charset.ts"/>
 
 class Demo {
+  static readonly REFRESH_MS:number = 5;
+
+  charset:Charset;
+
   canvas: HTMLCanvasElement;
   root: HTMLElement;
   screen: CanvasRenderingContext2D;
@@ -52,7 +56,7 @@ class Demo {
       this.doLoop = true;
       this.startFn();
 
-    }, 10);
+    }, Demo.REFRESH_MS * 2);
   }
 
   protected loop_starfield() {
@@ -60,9 +64,7 @@ class Demo {
       this.starfield.animate();
       this.starfield.paint(this.screen);
       if (this.doLoop) {
-        setTimeout(() => {
-          this.loop_starfield()
-        }, 5);
+        setTimeout(() => { this.loop_starfield() }, Demo.REFRESH_MS);
       }
     }
   }
@@ -72,9 +74,7 @@ class Demo {
       this.hstarfield.animate();
       this.hstarfield.paint(this.screen);
       if (this.doLoop) {
-        setTimeout(() => {
-          this.loop_hstarfield()
-        }, 5);
+        setTimeout(() => { this.loop_hstarfield() }, Demo.REFRESH_MS);
       }
     }
   }
@@ -84,10 +84,9 @@ class Demo {
 
       this.sinus.animate();
       this.sinus.paint(this.screen);
+
       if (this.doLoop) {
-        setTimeout(() => {
-          this.loop_sinusscroll()
-        }, 5);
+        setTimeout(() => { this.loop_sinusscroll() }, Demo.REFRESH_MS);
       }
     }
   }
@@ -110,31 +109,15 @@ class Demo {
     this.loop_hstarfield();
   }
 
-  start_sinusscroll(text:string) {
+  start_sinusscroll(charset:Charset, text:string) {
     if (!this.firstInit) this.init();
 
-    let charset: Charset = new Charset();
-    charset.load("charset_2_v1.png", this.root)
-      .then(() => {
-        /*
-        let id:ImageData = this.screen.createImageData(this.screen.canvas.width, this.screen.canvas.height);
-        charset.drawTo(id, "a", 30, 10);
-        PutPixel(id, new Point2D(10,10), new Color(255,255,255));
-        PutPixel(id, new Point2D(11,10), new Color(255,255,255));
-        PutPixel(id, new Point2D(12,10), new Color(255,255,255));
-        PutPixel(id, new Point2D(13,10), new Color(255,255,255));
-        PutPixel(id, new Point2D(10,11), new Color(255,255,255));
-        PutPixel(id, new Point2D(10,12), new Color(255,255,255));
-        PutPixel(id, new Point2D(10,13), new Color(255,255,255));
-        this.screen.putImageData(id, 0, 0);
-         */
+    this.charset = charset;
 
-        this.doLoop = true;
-        this.startFn = this.start_sinusscroll;
-
-        this.sinus = new SinusScroll(this.canvas.width, this.canvas.height, text, charset);
-        this.loop_sinusscroll();
-      });
+    this.doLoop = true;
+    this.startFn = () => { this.start_sinusscroll(charset, text) };
+    this.sinus = new SinusScroll(this.canvas.width, this.canvas.height, text, charset);
+    this.loop_sinusscroll();
   }
 
 }

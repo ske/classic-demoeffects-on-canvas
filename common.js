@@ -55,3 +55,4 @@ var Star = (function () {
     };
     return Star;
 }());
+//# sourceMappingURL=common.js.map

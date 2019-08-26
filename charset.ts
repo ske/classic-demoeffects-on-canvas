@@ -20,23 +20,20 @@ class Charset {
     }
   }
 
-  extractChars(imageMap: CanvasRenderingContext2D):Promise<void> {
-    return new Promise<void>((resolve, reject) => {
-      let column: number = 0;
-      let row: number = 0;
+  extractChars(imageMap: CanvasRenderingContext2D) {
+    let column: number = 0;
+    let row: number = 0;
 
-      for (let i: number = 0; i < this.charlist.length; i++) {
-        let char: string = this.charlist[i];
-        this.chars[char] = imageMap.getImageData(column, row, Charset.CHAR_WIDTH, Charset.CHAR_HEIGHT);
+    for (let i: number = 0; i < this.charlist.length; i++) {
+      let char: string = this.charlist[i];
+      this.chars[char] = imageMap.getImageData(column, row, Charset.CHAR_WIDTH, Charset.CHAR_HEIGHT);
 
-        column += Charset.CHAR_WIDTH;
-        if (column > (Charset.CHARS_PER_ROW-1) * Charset.CHAR_WIDTH) {
-          column = 0;
-          row += Charset.CHAR_HEIGHT;
-        }
+      column += Charset.CHAR_WIDTH;
+      if (column > (Charset.CHARS_PER_ROW-1) * Charset.CHAR_WIDTH) {
+        column = 0;
+        row += Charset.CHAR_HEIGHT;
       }
-      resolve();
-    });
+    }
   }
 
   get(char: string):ImageData {
@@ -60,9 +57,9 @@ class Charset {
         let el:HTMLCanvasElement = root.appendChild(tmpCanvas);
         let scr:CanvasRenderingContext2D = el.getContext("2d") as CanvasRenderingContext2D;
         scr.drawImage(img, 0, 0);
-        this.extractChars(scr).then(() => {
-          resolve();
-        });
+        this.extractChars(scr);
+        root.removeChild(el);
+        resolve();
       };
       img.src = imagefile;
     });

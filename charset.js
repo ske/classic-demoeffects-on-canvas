@@ -15,21 +15,17 @@ var Charset = (function () {
         }
     };
     Charset.prototype.extractChars = function (imageMap) {
-        var _this = this;
-        return new Promise(function (resolve, reject) {
-            var column = 0;
-            var row = 0;
-            for (var i = 0; i < _this.charlist.length; i++) {
-                var char = _this.charlist[i];
-                _this.chars[char] = imageMap.getImageData(column, row, Charset.CHAR_WIDTH, Charset.CHAR_HEIGHT);
-                column += Charset.CHAR_WIDTH;
-                if (column > (Charset.CHARS_PER_ROW - 1) * Charset.CHAR_WIDTH) {
-                    column = 0;
-                    row += Charset.CHAR_HEIGHT;
-                }
+        var column = 0;
+        var row = 0;
+        for (var i = 0; i < this.charlist.length; i++) {
+            var char = this.charlist[i];
+            this.chars[char] = imageMap.getImageData(column, row, Charset.CHAR_WIDTH, Charset.CHAR_HEIGHT);
+            column += Charset.CHAR_WIDTH;
+            if (column > (Charset.CHARS_PER_ROW - 1) * Charset.CHAR_WIDTH) {
+                column = 0;
+                row += Charset.CHAR_HEIGHT;
             }
-            resolve();
-        });
+        }
     };
     Charset.prototype.get = function (char) {
         if (this.chars[char] !== undefined) {
@@ -52,9 +48,9 @@ var Charset = (function () {
                 var el = root.appendChild(tmpCanvas);
                 var scr = el.getContext("2d");
                 scr.drawImage(img, 0, 0);
-                _this.extractChars(scr).then(function () {
-                    resolve();
-                });
+                _this.extractChars(scr);
+                root.removeChild(el);
+                resolve();
             };
             img.src = imagefile;
         });
@@ -64,3 +60,4 @@ var Charset = (function () {
     Charset.CHARS_PER_ROW = 27;
     return Charset;
 }());
+//# sourceMappingURL=charset.js.map

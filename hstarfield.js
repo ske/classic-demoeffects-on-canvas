@@ -70,3 +70,4 @@ var HStarfield = (function (_super) {
     };
     return HStarfield;
 }(Starfield));
+//# sourceMappingURL=hstarfield.js.map

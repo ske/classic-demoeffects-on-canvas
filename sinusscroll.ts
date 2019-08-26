@@ -10,7 +10,6 @@ class SinusScroll {
   protected text:string;
 
   protected offsetX:number;
-  protected yPosition:number;
   protected sinusBumps:number;
   protected actualCharIdx:number;
   protected sinusPositions: Point2D[];
@@ -21,8 +20,7 @@ class SinusScroll {
     this.charset = charset;
     this.text = text;
 
-    this.yPosition = this.height / 2;
-    this.sinusBumps = 2;
+    this.sinusBumps = 4;
     this.actualCharIdx = 0;
     this.generateSinus();
   }
@@ -32,14 +30,13 @@ class SinusScroll {
    */
   protected generateSinus() {
     this.sinusPositions = [];
-    let margin:number = SinusScroll.MARGIN_TOP_BOTTOM;
     let i:number = 0;
-    let a:number = 0;
     let x:number = 0;
     let b:number = (this.sinusBumps * Math.PI) / this.width;
+    let a:number = 0;
     while (a < (this.sinusBumps * Math.PI)) {
-      let y:number = Math.round(Math.sin(a) * ((this.height - margin) / 2));
-      this.sinusPositions[i] = new Point2D(x, y + this.height / 2);
+      let y:number = Math.round(Math.sin(a) * ((this.height - SinusScroll.MARGIN_TOP_BOTTOM) / 2));
+      this.sinusPositions[i] = new Point2D(x, Math.round(y + this.height / 2));
       a+=b;
       x++;
       i++;
@@ -54,19 +51,29 @@ class SinusScroll {
   animate() {
     this.clearBuffer();
     let wasDraw:boolean = false;
-    let o:number = this.offsetX;
+    let offset:number = this.offsetX;
+    let hcw = Math.round(Charset.CHAR_WIDTH / 2);
+    let hch = Math.round(Charset.CHAR_HEIGHT / 2);
 
     for (let i=0; i<this.text.length; i++) {
       let chr:string = this.text[i];
-      if (o > 0 && o < this.width) {
-        let pos:Point2D = this.sinusPositions[o];
-        this.charset.drawTo(this.buffer, chr, pos.x - Charset.CHAR_WIDTH / 2, pos.y - Charset.CHAR_HEIGHT / 2);
-        wasDraw = true;
+      if (offset < 0) {
+        offset+=Charset.CHAR_WIDTH;
+        continue;
       }
-      o+=Charset.CHAR_WIDTH;
+
+      let pos:Point2D = this.sinusPositions[offset];
+      this.charset.drawTo(this.buffer, chr, pos.x - hcw, pos.y - hch);
+      wasDraw = true;
+
+      offset+=Charset.CHAR_WIDTH;
+      if (offset>this.width) break;
     }
+
     this.offsetX-=SinusScroll.SPEED;
+
     if (!wasDraw) {
+      // start from the beginning if no chars was drawn
       this.offsetX = this.sinusPositions.length - 1;
     }
   }
