@@ -1,3 +1,4 @@
+"use strict";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -13,11 +14,35 @@ var __extends = (this && this.__extends) || (function () {
 })();
 var HStarfield = (function (_super) {
     __extends(HStarfield, _super);
-    function HStarfield() {
-        var _this = _super !== null && _super.apply(this, arguments) || this;
+    function HStarfield(w, h, preInitPositions, direction) {
+        if (preInitPositions === void 0) { preInitPositions = false; }
+        if (direction === void 0) { direction = -1; }
+        var _this = _super.call(this, w, h) || this;
         _this.direction = -1;
+        _this.direction = direction;
+        if (preInitPositions) {
+            _this.pregenerateStars();
+        }
         return _this;
     }
+    HStarfield.prototype.pregenerateStars = function () {
+        var w = Math.round(this.width / 2);
+        var h = Math.round(this.height / 2);
+        var hw = Math.round(w / 2);
+        var hh = Math.round(h / 2);
+        while (this.stars.length < this.maxStars / 5) {
+            var star = new Star();
+            star.start.x = Math.round(Math.random() * w) - hw;
+            star.start.y = Math.round(Math.random() * h) - hh;
+            star.start.z = Math.round(Math.random() * this.maxZ);
+            star.position.x = star.start.x;
+            star.position.y = star.start.y;
+            star.position.z = star.start.z;
+            star.speed = Math.round(Math.random() * this.maxSpeed) + 1;
+            star.active = true;
+            this.stars.push(star);
+        }
+    };
     HStarfield.prototype.moveStars = function () {
         var _this = this;
         var w = this.width / 2;
@@ -36,7 +61,12 @@ var HStarfield = (function (_super) {
         var h = Math.round(this.height / 2);
         var hw = Math.round(w / 2);
         var hh = Math.round(h / 2);
-        star.start.x = this.direction > 0 ? -hw : hw - 1;
+        if (this.direction > 0) {
+            star.start.x = Math.round(-hw - Math.random() * w);
+        }
+        else {
+            star.start.x = Math.round(hw - 1 + Math.random() * h);
+        }
         star.start.y = Math.round(Math.random() * h) - hh;
         star.start.z = Math.round(Math.random() * this.maxZ);
         star.position.x = star.start.x;

@@ -1,3 +1,4 @@
+"use strict";
 var Demo = (function () {
     function Demo(el) {
         var _this = this;

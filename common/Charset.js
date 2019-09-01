@@ -1,3 +1,4 @@
+"use strict";
 var Charset = (function () {
     function Charset() {
         this.chars = {};
@@ -7,12 +8,7 @@ var Charset = (function () {
         var char = this.chars[character];
         if (char === undefined)
             return;
-        for (var ox = 0; ox < char.width; ox++) {
-            for (var oy = 0; oy < char.height; oy++) {
-                var c = GetPixel(char, new Point2D(ox, oy));
-                PutPixel(buffer, new Point2D(x + ox, y + oy), c);
-            }
-        }
+        CopyBuffer(char, buffer, x, y);
     };
     Charset.prototype.extractChars = function (imageMap) {
         var column = 0;
@@ -37,7 +33,7 @@ var Charset = (function () {
         var _this = this;
         var img = new Image();
         return new Promise(function (resolve, reject) {
-            img.onerror = function (e) {
+            img.onerror = function () {
                 reject();
             };
             img.onload = function (e) {
@@ -60,4 +56,4 @@ var Charset = (function () {
     Charset.CHARS_PER_ROW = 27;
     return Charset;
 }());
-//# sourceMappingURL=charset.js.map
+//# sourceMappingURL=Charset.js.map

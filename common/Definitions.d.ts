@@ -17,12 +17,6 @@ declare class Point3D {
     constructor(x: number, y: number, z: number);
 }
 declare const GetPixel: (buffer: ImageData, p: Point2D) => Color;
+declare const CopyBuffer: (fromBuffer: ImageData, toBuffer: ImageData, x: number, y: number) => void;
+declare const ClearBuffer: (buffer: ImageData, c: Color) => void;
 declare const PutPixel: (buffer: ImageData, p: Point2D, c: Color) => void;
-declare class Star {
-    start: Point3D;
-    position: Point3D;
-    speed: number;
-    active: Boolean;
-    constructor();
-    reset(): void;
-}

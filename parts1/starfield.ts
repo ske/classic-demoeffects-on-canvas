@@ -1,8 +1,22 @@
-///<reference path="common.ts"/>
+class Star {
+    start: Point3D;
+    position: Point3D;
+    speed: number;
+    active: Boolean;
+    constructor() {
+        this.reset();
+    }
+    reset() {
+        this.start = new Point3D(-1, -1, -1)
+        this.position = new Point3D(-1, -1, -1);
 
+        this.speed = 0;
+        this.active = false;
+    }
+}
 class Starfield {
     stars: Star[] = [];
-    readonly maxStars: number = 1000;
+    readonly maxStars: number = 500;
     readonly maxSpeed: number = 10;
     readonly maxZ: number = 1300;
     readonly startZ: number = 500;
@@ -51,21 +65,17 @@ class Starfield {
 
     protected generateStars() {
         if (this.stars.length >= this.maxStars) {
-            let index = null;
             for (let i=0; i<this.stars.length; i++) {
                 if (!this.stars[i].active) {
-                    index = i;
-                    break;
+                    this.randomizeStar(this.stars[i]);
                 }
             }
-            // reuse inactive star
-            if (index !== null) {
-                this.randomizeStar(this.stars[index]);
-            }
         } else {
-            let star = new Star();
-            this.randomizeStar(star);
-            this.stars.push(star);
+            while (this.stars.length < this.maxStars) {
+                let star = new Star();
+                this.randomizeStar(star);
+                this.stars.push(star);
+            }
         }
     }
 
@@ -89,8 +99,8 @@ class Starfield {
                 let x1 = star.start.x;
                 let y1 = star.start.y;
 
-                let x = star.position.x + (x1 * (star.position.z + this.startZ) / z1 + cx);
-                let y = star.position.y + (y1 * (star.position.z + this.startZ) / z1 + cy);
+                let x = Math.round(star.position.x + (x1 * (star.position.z + this.startZ) / z1 + cx));
+                let y = Math.round(star.position.y + (y1 * (star.position.z + this.startZ) / z1 + cy));
 
                 if (x>=0 && y>=0 && x<this.width && y<this.height) {
                     let c = star.position.z / ((this.maxZ + this.startZ) / 300) + 0;
@@ -100,7 +110,7 @@ class Starfield {
                     if (star.position.z > 1 * this.maxZ / 3) phase--;
                     if (star.position.z > 2 * this.maxZ / 3) phase--;
                      */
-                    this.drawStar(new Point2D(Math.round(x), Math.round(y)), new Color(c,c,c), phase);
+                    this.drawStar(new Point2D(x, y), new Color(c,c,c), phase);
                 } else {
                     star.reset();
                 }

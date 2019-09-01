@@ -1,7 +1,20 @@
+"use strict";
+var Star = (function () {
+    function Star() {
+        this.reset();
+    }
+    Star.prototype.reset = function () {
+        this.start = new Point3D(-1, -1, -1);
+        this.position = new Point3D(-1, -1, -1);
+        this.speed = 0;
+        this.active = false;
+    };
+    return Star;
+}());
 var Starfield = (function () {
     function Starfield(w, h) {
         this.stars = [];
-        this.maxStars = 1000;
+        this.maxStars = 500;
         this.maxSpeed = 10;
         this.maxZ = 1300;
         this.startZ = 500;
@@ -37,21 +50,18 @@ var Starfield = (function () {
     };
     Starfield.prototype.generateStars = function () {
         if (this.stars.length >= this.maxStars) {
-            var index = null;
             for (var i = 0; i < this.stars.length; i++) {
                 if (!this.stars[i].active) {
-                    index = i;
-                    break;
+                    this.randomizeStar(this.stars[i]);
                 }
-            }
-            if (index !== null) {
-                this.randomizeStar(this.stars[index]);
             }
         }
         else {
-            var star = new Star();
-            this.randomizeStar(star);
-            this.stars.push(star);
+            while (this.stars.length < this.maxStars) {
+                var star = new Star();
+                this.randomizeStar(star);
+                this.stars.push(star);
+            }
         }
     };
     Starfield.prototype.moveStars = function () {
@@ -74,14 +84,14 @@ var Starfield = (function () {
                 var z1 = star.start.z + _this.startZ;
                 var x1 = star.start.x;
                 var y1 = star.start.y;
-                var x = star.position.x + (x1 * (star.position.z + _this.startZ) / z1 + cx);
-                var y = star.position.y + (y1 * (star.position.z + _this.startZ) / z1 + cy);
+                var x = Math.round(star.position.x + (x1 * (star.position.z + _this.startZ) / z1 + cx));
+                var y = Math.round(star.position.y + (y1 * (star.position.z + _this.startZ) / z1 + cy));
                 if (x >= 0 && y >= 0 && x < _this.width && y < _this.height) {
                     var c = star.position.z / ((_this.maxZ + _this.startZ) / 300) + 0;
                     if (c > 255)
                         c = 255;
                     var phase = 1;
-                    _this.drawStar(new Point2D(Math.round(x), Math.round(y)), new Color(c, c, c), phase);
+                    _this.drawStar(new Point2D(x, y), new Color(c, c, c), phase);
                 }
                 else {
                     star.reset();

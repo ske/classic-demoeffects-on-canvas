@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="text/javascript" src="common/Definitions.js"></script>
+  <script type="text/javascript" src="common/DoubleBuffer.js"></script>
+  <script type="text/javascript" src="common/Charset.js"></script>
+  <script type="text/javascript" src="parts/Scroller.js"></script>
+  <script type="text/javascript" src="parts/SinusScroller.js"></script>
+
+  <!--
+  <script type="text/javascript" src="parts1/starfield.js"></script>
+  <script type="text/javascript" src="parts1/hstarfield.js"></script>
+  <script type="text/javascript" src="parts1/sinusscroll.js"></script>
+  -->
+  <script type="text/javascript" src="demo1.js"></script>
+  <style type="text/css">
+    body {margin:0;padding:0;}
+    #demo {
+      background-color: #000;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+    }
+  </style>
+</head>
+<body>
+<div id="demo"></div>
+<script type="text/javascript">
+  document.addEventListener('DOMContentLoaded', function() {
+    let demo1 = new Demo1(document.getElementById('demo'));
+    demo1.start();
+  });
+</script>
+</body>
+</html>

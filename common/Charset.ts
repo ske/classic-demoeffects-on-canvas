@@ -3,6 +3,7 @@ class Charset {
   public static CHAR_HEIGHT:number = 16;
   protected static CHARS_PER_ROW:number = 27;
 
+
   chars: {} = {};
   charlist: string = ' ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~#@!.,0123456789-';
 
@@ -12,12 +13,7 @@ class Charset {
     // Copy character into the buffer byte-by-byte
     let char:ImageData = this.chars[character];
     if (char === undefined) return;
-    for (let ox=0; ox<char.width; ox++) {
-      for (let oy=0; oy<char.height; oy++) {
-        let c = GetPixel(char, new Point2D(ox, oy));
-        PutPixel(buffer, new Point2D(x + ox, y + oy), c);
-      }
-    }
+    CopyBuffer(char, buffer, x, y);
   }
 
   extractChars(imageMap: CanvasRenderingContext2D) {
@@ -26,6 +22,7 @@ class Charset {
 
     for (let i: number = 0; i < this.charlist.length; i++) {
       let char: string = this.charlist[i];
+
       this.chars[char] = imageMap.getImageData(column, row, Charset.CHAR_WIDTH, Charset.CHAR_HEIGHT);
 
       column += Charset.CHAR_WIDTH;
@@ -46,9 +43,9 @@ class Charset {
   load(imagefile: string, root:HTMLElement): Promise<void> {
     let img: HTMLImageElement = new Image();
     return new Promise<void>((resolve, reject) => {
-      img.onerror = (e:Event) => {
+      img.onerror = () => {
         reject();
-      };
+      }
       img.onload = (e: Event) => {
         let tmpCanvas:HTMLCanvasElement = document.createElement("canvas");
         tmpCanvas.style.display = 'none';

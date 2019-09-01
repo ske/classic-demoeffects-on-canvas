@@ -1,4 +1,11 @@
-/// <reference path="common.d.ts" />
+declare class Star {
+    start: Point3D;
+    position: Point3D;
+    speed: number;
+    active: Boolean;
+    constructor();
+    reset(): void;
+}
 declare class Starfield {
     stars: Star[];
     readonly maxStars: number;
