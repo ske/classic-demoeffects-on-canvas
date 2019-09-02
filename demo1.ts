@@ -24,9 +24,12 @@ class Demo1 {
   }
 
   protected loop() {
+
     this.starfield.animate();
     this.scroller1.animate();
     this.scroller2.animate();
+
+    this.screen.clearRect(0,0,this.canvas.width, this.canvas.height);
 
     this.starfield.paint(this.screen);
     this.scroller1.paint(this.screen);

@@ -65,7 +65,7 @@ var StarField = (function () {
     StarField.prototype.throwStars = function () {
         var _this = this;
         var ctx = this.tmpBuffer.getContext("2d");
-        ctx.fillRect(0, 0, this.tmpBuffer.width, this.tmpBuffer.height);
+        ctx.clearRect(0, 0, this.tmpBuffer.width, this.tmpBuffer.height);
         var imgData = ctx.getImageData(0, 0, this.tmpBuffer.width, this.tmpBuffer.height);
         this.stars.forEach(function (star) {
             if (star.active) {

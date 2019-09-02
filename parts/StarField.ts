@@ -71,7 +71,7 @@ class StarField {
 
   protected throwStars() {
     let ctx = this.tmpBuffer.getContext("2d");
-    ctx.fillRect(0,0,this.tmpBuffer.width,this.tmpBuffer.height);
+    ctx.clearRect(0,0,this.tmpBuffer.width,this.tmpBuffer.height);
     let imgData:ImageData = ctx.getImageData(0,0,this.tmpBuffer.width, this.tmpBuffer.height);
     this.stars.forEach((star:Star) => {
       if (star.active) {

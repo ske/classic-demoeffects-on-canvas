@@ -32,8 +32,6 @@ class Scroller {
   animate() {
     let ctx = this.tmpBuffer.getContext("2d");
     ctx.clearRect(0,0,this.tmpBuffer.width, this.tmpBuffer.height);
-    // ctx.fillStyle = "rgba(255,255,255,0.1)";
-    // ctx.fillRect(0,0,this.tmpBuffer.width,this.tmpBuffer.height);
     let imgData:ImageData = ctx.getImageData(0,0,this.tmpBuffer.width,this.tmpBuffer.height);
 
     this.xPosition-=this.speed;
