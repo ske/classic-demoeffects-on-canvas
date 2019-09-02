@@ -28,6 +28,7 @@ class Scroller {
   animate() {
     this.xPosition-=this.speed;
     this.tmpBuffer = new ImageData(this.width, this.charHeight);
+    ClearBuffer(this.tmpBuffer, new Color(255,255,255,64));
     let x:number = this.xPosition;
     let wasDraw:boolean = false;
     for (let i:number = 0; i<this.text.length; i++) {
@@ -40,7 +41,11 @@ class Scroller {
     if (!wasDraw) this.reset(); // we run out of text to render so we reset and restart from beginning
   }
 
-  paint(buffer:ImageData) {
-    CopyBuffer(this.tmpBuffer, buffer, 0, this.yPosition);
+  paint(buffer:CanvasRenderingContext2D) {
+    let c:HTMLCanvasElement = document.createElement("canvas");
+    c.width = this.tmpBuffer.width;
+    c.height = this.tmpBuffer.height;
+    c.getContext("2d").putImageData(this.tmpBuffer, 0, 0);
+    buffer.drawImage(c, 0, this.yPosition);
   }
 }

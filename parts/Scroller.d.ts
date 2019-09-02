@@ -11,5 +11,5 @@ declare class Scroller {
     constructor(text: string, width: number, yPosition: number, charset: Charset);
     protected reset(): void;
     animate(): void;
-    paint(buffer: ImageData): void;
+    paint(buffer: CanvasRenderingContext2D): void;
 }

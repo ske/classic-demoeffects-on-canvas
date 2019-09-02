@@ -42,6 +42,15 @@ const GetPixel = (buffer: ImageData, p: Point2D ): Color => {
   return c;
 };
 
+const ClearBuffer = (buffer:ImageData, c:Color) => {
+  for (let i:number = 0; i<buffer.data.length; i+=4) {
+    buffer.data[i] = c.r;
+    buffer.data[i+1] = c.g;
+    buffer.data[i+2] = c.b;
+    buffer.data[i+3] = c.a;
+  }
+};
+
 const CopyBuffer = (fromBuffer:ImageData, toBuffer:ImageData, x:number, y:number) => {
   let tr = y;
   let so:number = 0;
@@ -61,14 +70,6 @@ const CopyBuffer = (fromBuffer:ImageData, toBuffer:ImageData, x:number, y:number
   }
 };
 
-const ClearBuffer = (buffer:ImageData, c:Color) => {
-  for (let i:number = 0; i<buffer.width; i++) {
-    for (let j:number = 0; j<buffer.height; j++) {
-      PutPixel(buffer, new Point2D(i, j), c);
-    }
-  }
-};
-
 const PutPixel = (buffer: ImageData, p: Point2D, c: Color) => {
   if (p.x < 0 || p.y < 0) return;
   if (p.x > (buffer.width-1) || p.y > (buffer.height-1)) return;
@@ -78,3 +79,21 @@ const PutPixel = (buffer: ImageData, p: Point2D, c: Color) => {
   buffer.data[offset+2] = c.b;
   buffer.data[offset+3] = c.a;
 };
+
+class IDFactory {
+  private static _instance:IDFactory | null = null;
+  private screen:CanvasRenderingContext2D;
+  private constructor() {}
+  static instance():IDFactory {
+    if (this._instance==null) {
+      this._instance = new IDFactory();
+    }
+    return this._instance;
+  }
+  get(width:number, height:number):ImageData {
+    return this.screen.createImageData(width, height);
+  }
+  setCanvas(screen:CanvasRenderingContext2D) {
+    this.screen = screen;
+  }
+}

@@ -36,13 +36,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 var Demo1 = (function () {
     function Demo1(root) {
-        this.hstarfield = null;
         this.starfield = null;
         this.scroller1 = null;
         this.scroller2 = null;
         this.canvas = null;
         this.screen = null;
-        this.dblbuff = null;
         this.root = root;
         this.initCanvas();
     }
@@ -52,17 +50,18 @@ var Demo1 = (function () {
         el.setAttribute("height", this.root.offsetHeight.toString());
         this.canvas = this.root.appendChild(el);
         this.screen = this.canvas.getContext("2d");
-        this.dblbuff = new DoubleBuffer(this.canvas.width, this.canvas.height);
+        this.screen.globalAlpha = 0.5;
+        this.screen.globalCompositeOperation = 'xor';
+        IDFactory.instance().setCanvas(this.screen);
     };
     Demo1.prototype.loop = function () {
         var _this = this;
-        this.dblbuff.clearBuffer();
+        this.starfield.animate();
         this.scroller1.animate();
         this.scroller2.animate();
-        this.scroller1.paint(this.dblbuff.getActive());
-        this.scroller2.paint(this.dblbuff.getActive());
-        this.dblbuff.SwapBuffers();
-        this.screen.putImageData(this.dblbuff.getVisible(), 0, 0);
+        this.starfield.paint(this.screen);
+        this.scroller1.paint(this.screen);
+        this.scroller2.paint(this.screen);
         requestAnimationFrame(function () { _this.loop(); });
     };
     Demo1.prototype.start = function () {
@@ -75,10 +74,9 @@ var Demo1 = (function () {
                         return [4, charset.load("charsets/charset_2_v1.png", this.root)];
                     case 1:
                         _a.sent();
+                        this.starfield = new StarField(this.canvas.width, this.canvas.height);
                         this.scroller1 = new SinusScroller("Hello World! This is sinus scroll. Written in TypeScript for modern browsers. Have fun!", this.canvas.width, 200, (this.canvas.height / 2), charset);
                         this.scroller2 = new Scroller("Hello World! This is normal scroll.", this.canvas.width, this.canvas.height - 50, charset);
-                        this.dblbuff.setActive(0);
-                        this.dblbuff.setVisible(1);
                         this.loop();
                         return [2];
                 }

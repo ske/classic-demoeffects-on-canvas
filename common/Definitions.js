@@ -34,6 +34,14 @@ var GetPixel = function (buffer, p) {
     c.a = buffer.data[offset + 3];
     return c;
 };
+var ClearBuffer = function (buffer, c) {
+    for (var i = 0; i < buffer.data.length; i += 4) {
+        buffer.data[i] = c.r;
+        buffer.data[i + 1] = c.g;
+        buffer.data[i + 2] = c.b;
+        buffer.data[i + 3] = c.a;
+    }
+};
 var CopyBuffer = function (fromBuffer, toBuffer, x, y) {
     var tr = y;
     var so = 0;
@@ -52,13 +60,6 @@ var CopyBuffer = function (fromBuffer, toBuffer, x, y) {
         tr++;
     }
 };
-var ClearBuffer = function (buffer, c) {
-    for (var i = 0; i < buffer.width; i++) {
-        for (var j = 0; j < buffer.height; j++) {
-            PutPixel(buffer, new Point2D(i, j), c);
-        }
-    }
-};
 var PutPixel = function (buffer, p, c) {
     if (p.x < 0 || p.y < 0)
         return;
@@ -70,4 +71,22 @@ var PutPixel = function (buffer, p, c) {
     buffer.data[offset + 2] = c.b;
     buffer.data[offset + 3] = c.a;
 };
+var IDFactory = (function () {
+    function IDFactory() {
+    }
+    IDFactory.instance = function () {
+        if (this._instance == null) {
+            this._instance = new IDFactory();
+        }
+        return this._instance;
+    };
+    IDFactory.prototype.get = function (width, height) {
+        return this.screen.createImageData(width, height);
+    };
+    IDFactory.prototype.setCanvas = function (screen) {
+        this.screen = screen;
+    };
+    IDFactory._instance = null;
+    return IDFactory;
+}());
 //# sourceMappingURL=Definitions.js.map

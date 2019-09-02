@@ -17,6 +17,7 @@ var Scroller = (function () {
     Scroller.prototype.animate = function () {
         this.xPosition -= this.speed;
         this.tmpBuffer = new ImageData(this.width, this.charHeight);
+        ClearBuffer(this.tmpBuffer, new Color(255, 255, 255, 64));
         var x = this.xPosition;
         var wasDraw = false;
         for (var i = 0; i < this.text.length; i++) {
@@ -30,7 +31,11 @@ var Scroller = (function () {
             this.reset();
     };
     Scroller.prototype.paint = function (buffer) {
-        CopyBuffer(this.tmpBuffer, buffer, 0, this.yPosition);
+        var c = document.createElement("canvas");
+        c.width = this.tmpBuffer.width;
+        c.height = this.tmpBuffer.height;
+        c.getContext("2d").putImageData(this.tmpBuffer, 0, 0);
+        buffer.drawImage(c, 0, this.yPosition);
     };
     return Scroller;
 }());

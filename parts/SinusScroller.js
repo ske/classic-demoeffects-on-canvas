@@ -37,7 +37,8 @@ var SinusScroller = (function () {
     };
     SinusScroller.prototype.animate = function () {
         this.xPosition -= this.speed;
-        this.tmpBuffer = new ImageData(this.width, this.height);
+        this.tmpBuffer = IDFactory.instance().get(this.width, this.height);
+        ClearBuffer(this.tmpBuffer, new Color(255, 255, 255, 64));
         var x = this.xPosition;
         var wasDraw = false;
         for (var i = 0; i < this.text.length; i++) {
@@ -51,7 +52,11 @@ var SinusScroller = (function () {
             this.reset();
     };
     SinusScroller.prototype.paint = function (buffer) {
-        CopyBuffer(this.tmpBuffer, buffer, 0, Math.round(this.yPosition - (this.height / 2)));
+        var c = document.createElement("canvas");
+        c.width = this.tmpBuffer.width;
+        c.height = this.tmpBuffer.height;
+        c.getContext("2d").putImageData(this.tmpBuffer, 0, 0);
+        buffer.drawImage(c, 0, Math.round(this.yPosition - (this.height / 2)));
     };
     return SinusScroller;
 }());
