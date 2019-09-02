@@ -3,7 +3,6 @@ class Charset {
   public static CHAR_HEIGHT:number = 16;
   protected static CHARS_PER_ROW:number = 27;
 
-
   chars: {} = {};
   charlist: string = ' ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~#@!.,0123456789-';
 

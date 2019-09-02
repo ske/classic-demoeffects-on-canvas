@@ -7,10 +7,10 @@ declare class SinusScroller {
     protected xPosition: number;
     protected charset: Charset;
     protected sinusData: number[];
-    protected tmpBuffer: ImageData;
     protected charHeight: number;
     protected charWidth: number;
     protected sinusBumps: number;
+    protected tmpBuffer: HTMLCanvasElement;
     constructor(text: string, width: number, height: number, yPosition: number, charset: Charset);
     protected genSinusData(): void;
     protected reset(): void;

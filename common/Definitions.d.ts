@@ -20,11 +20,3 @@ declare const GetPixel: (buffer: ImageData, p: Point2D) => Color;
 declare const ClearBuffer: (buffer: ImageData, c: Color) => void;
 declare const CopyBuffer: (fromBuffer: ImageData, toBuffer: ImageData, x: number, y: number) => void;
 declare const PutPixel: (buffer: ImageData, p: Point2D, c: Color) => void;
-declare class IDFactory {
-    private static _instance;
-    private screen;
-    private constructor();
-    static instance(): IDFactory;
-    get(width: number, height: number): ImageData;
-    setCanvas(screen: CanvasRenderingContext2D): void;
-}

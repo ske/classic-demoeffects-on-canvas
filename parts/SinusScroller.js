@@ -12,6 +12,9 @@ var SinusScroller = (function () {
         var char = this.charset.get("A");
         this.charHeight = char.height;
         this.charWidth = char.width;
+        this.tmpBuffer = document.createElement("canvas");
+        this.tmpBuffer.width = width;
+        this.tmpBuffer.height = height;
         this.reset();
         this.genSinusData();
     }
@@ -36,27 +39,25 @@ var SinusScroller = (function () {
         this.xPosition = this.width;
     };
     SinusScroller.prototype.animate = function () {
+        var ctx = this.tmpBuffer.getContext("2d");
+        ctx.clearRect(0, 0, this.tmpBuffer.width, this.tmpBuffer.height);
+        var imgData = ctx.getImageData(0, 0, this.tmpBuffer.width, this.tmpBuffer.height);
         this.xPosition -= this.speed;
-        this.tmpBuffer = IDFactory.instance().get(this.width, this.height);
-        ClearBuffer(this.tmpBuffer, new Color(255, 255, 255, 64));
         var x = this.xPosition;
         var wasDraw = false;
         for (var i = 0; i < this.text.length; i++) {
             if (x >= -this.charWidth && x < this.width) {
-                this.charset.drawTo(this.tmpBuffer, this.text[i], x, this.sinusData[x]);
+                this.charset.drawTo(imgData, this.text[i], x, this.sinusData[x]);
                 wasDraw = true;
             }
             x = x + this.charWidth;
         }
         if (!wasDraw)
             this.reset();
+        ctx.putImageData(imgData, 0, 0);
     };
     SinusScroller.prototype.paint = function (buffer) {
-        var c = document.createElement("canvas");
-        c.width = this.tmpBuffer.width;
-        c.height = this.tmpBuffer.height;
-        c.getContext("2d").putImageData(this.tmpBuffer, 0, 0);
-        buffer.drawImage(c, 0, Math.round(this.yPosition - (this.height / 2)));
+        buffer.drawImage(this.tmpBuffer, 0, Math.round(this.yPosition - (this.height / 2)));
     };
     return SinusScroller;
 }());

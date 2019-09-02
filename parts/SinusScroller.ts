@@ -7,10 +7,10 @@ class SinusScroller {
   protected xPosition:number;
   protected charset:Charset;
   protected sinusData:number[] = [];
-  protected tmpBuffer:ImageData;
   protected charHeight:number;
   protected charWidth:number;
   protected sinusBumps:number = 2;
+  protected tmpBuffer:HTMLCanvasElement;
 
   constructor(text:string, width: number, height: number, yPosition:number, charset:Charset) {
     this.text = text;
@@ -22,6 +22,10 @@ class SinusScroller {
     let char:ImageData = this.charset.get("A");
     this.charHeight = char.height;
     this.charWidth = char.width;
+
+    this.tmpBuffer = document.createElement("canvas");
+    this.tmpBuffer.width = width;
+    this.tmpBuffer.height = height;
 
     this.reset();
     this.genSinusData();
@@ -50,38 +54,26 @@ class SinusScroller {
   }
 
   animate() {
+    let ctx = this.tmpBuffer.getContext("2d");
+    ctx.clearRect(0,0,this.tmpBuffer.width, this.tmpBuffer.height);
+    let imgData:ImageData = ctx.getImageData(0,0,this.tmpBuffer.width,this.tmpBuffer.height);
+
     this.xPosition-=this.speed;
-    this.tmpBuffer = IDFactory.instance().get(this.width, this.height);
-    // new ImageData(this.width, this.height);
-    ClearBuffer(this.tmpBuffer, new Color(255,255,255,64));
     let x:number = this.xPosition;
     let wasDraw:boolean = false;
     for (let i:number = 0; i<this.text.length; i++) {
       if (x>=-this.charWidth && x<this.width) {
-        this.charset.drawTo(this.tmpBuffer, this.text[i], x, this.sinusData[x]);
+        this.charset.drawTo(imgData, this.text[i], x, this.sinusData[x]);
         wasDraw = true;
       }
       x=x+this.charWidth;
     }
     if (!wasDraw) this.reset(); // we run out of text to render so we reset and restart from beginning
 
+    ctx.putImageData(imgData, 0, 0);
   }
 
   paint(buffer:CanvasRenderingContext2D) {
-    // createImageBitnamp has NO SUPPORT ON EDGE
-    /*
-    createImageBitmap(this.tmpBuffer)
-      .then((bmp:ImageBitmap) => {
-        buffer.drawImage(bmp, 0, Math.round(this.yPosition - (this.height / 2)));
-      }).catch((e) => {
-        console.log(e);
-    });
-     */
-
-    let c:HTMLCanvasElement = document.createElement("canvas");
-    c.width = this.tmpBuffer.width;
-    c.height = this.tmpBuffer.height;
-    c.getContext("2d").putImageData(this.tmpBuffer, 0, 0);
-    buffer.drawImage(c, 0, Math.round(this.yPosition - (this.height / 2)));
+    buffer.drawImage(this.tmpBuffer, 0, Math.round(this.yPosition - (this.height / 2)));
   }
 }

@@ -19,9 +19,8 @@ class Demo1 {
     el.setAttribute("height", this.root.offsetHeight.toString());
     this.canvas = this.root.appendChild(el) as HTMLCanvasElement;
     this.screen = this.canvas.getContext("2d");
-    this.screen.globalAlpha = 0.5;
-    this.screen.globalCompositeOperation = 'xor';
-    IDFactory.instance().setCanvas(this.screen);
+    // this.screen.globalAlpha = 1;
+    // this.screen.globalCompositeOperation = 'xor';
   }
 
   protected loop() {

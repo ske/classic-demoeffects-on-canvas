@@ -71,22 +71,4 @@ var PutPixel = function (buffer, p, c) {
     buffer.data[offset + 2] = c.b;
     buffer.data[offset + 3] = c.a;
 };
-var IDFactory = (function () {
-    function IDFactory() {
-    }
-    IDFactory.instance = function () {
-        if (this._instance == null) {
-            this._instance = new IDFactory();
-        }
-        return this._instance;
-    };
-    IDFactory.prototype.get = function (width, height) {
-        return this.screen.createImageData(width, height);
-    };
-    IDFactory.prototype.setCanvas = function (screen) {
-        this.screen = screen;
-    };
-    IDFactory._instance = null;
-    return IDFactory;
-}());
 //# sourceMappingURL=Definitions.js.map

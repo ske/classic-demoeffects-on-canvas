@@ -50,9 +50,6 @@ var Demo1 = (function () {
         el.setAttribute("height", this.root.offsetHeight.toString());
         this.canvas = this.root.appendChild(el);
         this.screen = this.canvas.getContext("2d");
-        this.screen.globalAlpha = 0.5;
-        this.screen.globalCompositeOperation = 'xor';
-        IDFactory.instance().setCanvas(this.screen);
     };
     Demo1.prototype.loop = function () {
         var _this = this;

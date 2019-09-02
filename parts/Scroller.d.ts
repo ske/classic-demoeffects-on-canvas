@@ -5,7 +5,7 @@ declare class Scroller {
     protected charset: Charset;
     protected width: number;
     protected xPosition: number;
-    protected tmpBuffer: ImageData;
+    protected tmpBuffer: HTMLCanvasElement;
     protected charHeight: number;
     protected charWidth: number;
     constructor(text: string, width: number, yPosition: number, charset: Charset);

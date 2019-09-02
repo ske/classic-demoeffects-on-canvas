@@ -80,20 +80,3 @@ const PutPixel = (buffer: ImageData, p: Point2D, c: Color) => {
   buffer.data[offset+3] = c.a;
 };
 
-class IDFactory {
-  private static _instance:IDFactory | null = null;
-  private screen:CanvasRenderingContext2D;
-  private constructor() {}
-  static instance():IDFactory {
-    if (this._instance==null) {
-      this._instance = new IDFactory();
-    }
-    return this._instance;
-  }
-  get(width:number, height:number):ImageData {
-    return this.screen.createImageData(width, height);
-  }
-  setCanvas(screen:CanvasRenderingContext2D) {
-    this.screen = screen;
-  }
-}
