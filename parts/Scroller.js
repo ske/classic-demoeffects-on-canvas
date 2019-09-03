@@ -20,20 +20,18 @@ var Scroller = (function () {
     Scroller.prototype.animate = function () {
         var ctx = this.tmpBuffer.getContext("2d");
         ctx.clearRect(0, 0, this.tmpBuffer.width, this.tmpBuffer.height);
-        var imgData = ctx.getImageData(0, 0, this.tmpBuffer.width, this.tmpBuffer.height);
         this.xPosition -= this.speed;
         var x = this.xPosition;
         var wasDraw = false;
         for (var i = 0; i < this.text.length; i++) {
             if (x >= -this.charWidth && x < this.width) {
-                this.charset.drawTo(imgData, this.text[i], x, 0);
+                this.charset.draw(ctx, this.text[i], x, 0);
                 wasDraw = true;
             }
             x = x + this.charWidth;
         }
         if (!wasDraw)
             this.reset();
-        ctx.putImageData(imgData, 0, 0);
     };
     Scroller.prototype.paint = function (buffer) {
         buffer.drawImage(this.tmpBuffer, 0, this.yPosition);

@@ -4,18 +4,24 @@ var Charset = (function () {
         this.chars = {};
         this.charlist = ' ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz~#@!.,0123456789-';
     }
-    Charset.prototype.drawTo = function (buffer, character, x, y) {
+    Charset.prototype.draw = function (buffer, character, x, y) {
         var char = this.chars[character];
         if (char === undefined)
             return;
-        CopyBuffer(char, buffer, x, y);
+        buffer.drawImage(char, x, y);
     };
-    Charset.prototype.extractChars = function (imageMap) {
+    Charset.prototype.extract = function (imageMap) {
         var column = 0;
         var row = 0;
         for (var i = 0; i < this.charlist.length; i++) {
             var char = this.charlist[i];
-            this.chars[char] = imageMap.getImageData(column, row, Charset.CHAR_WIDTH, Charset.CHAR_HEIGHT);
+            var c = document.createElement("canvas");
+            c.width = Charset.CHAR_WIDTH;
+            c.height = Charset.CHAR_HEIGHT;
+            var id = imageMap.getImageData(column, row, Charset.CHAR_WIDTH, Charset.CHAR_HEIGHT);
+            var ctx = c.getContext("2d");
+            ctx.putImageData(id, 0, 0);
+            this.chars[char] = c;
             column += Charset.CHAR_WIDTH;
             if (column > (Charset.CHARS_PER_ROW - 1) * Charset.CHAR_WIDTH) {
                 column = 0;
@@ -44,7 +50,7 @@ var Charset = (function () {
                 var el = root.appendChild(tmpCanvas);
                 var scr = el.getContext("2d");
                 scr.drawImage(img, 0, 0);
-                _this.extractChars(scr);
+                _this.extract(scr);
                 root.removeChild(el);
                 resolve();
             };

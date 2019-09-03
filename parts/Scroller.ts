@@ -32,21 +32,18 @@ class Scroller {
   animate() {
     let ctx = this.tmpBuffer.getContext("2d");
     ctx.clearRect(0,0,this.tmpBuffer.width, this.tmpBuffer.height);
-    let imgData:ImageData = ctx.getImageData(0,0,this.tmpBuffer.width,this.tmpBuffer.height);
 
     this.xPosition-=this.speed;
     let x:number = this.xPosition;
     let wasDraw:boolean = false;
     for (let i:number = 0; i<this.text.length; i++) {
       if (x>=-this.charWidth && x<this.width) {
-        this.charset.drawTo(imgData, this.text[i], x, 0);
+        this.charset.draw(ctx, this.text[i], x, 0);
         wasDraw = true;
       }
       x=x+this.charWidth;
     }
     if (!wasDraw) this.reset(); // we run out of text to render so we reset and restart from beginning
-
-    ctx.putImageData(imgData, 0, 0);
   }
 
   paint(buffer:CanvasRenderingContext2D) {

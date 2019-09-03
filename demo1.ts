@@ -1,6 +1,7 @@
 class Demo1 {
 
   starfield:StarField = null;
+  hstarfield:HorizontalStarField = null;
   scroller1:SinusScroller = null;
   scroller2:Scroller = null;
 
@@ -25,13 +26,15 @@ class Demo1 {
 
   protected loop() {
 
-    this.starfield.animate();
+    // this.starfield.animate();
+    this.hstarfield.animate();
     this.scroller1.animate();
     this.scroller2.animate();
 
     this.screen.clearRect(0,0,this.canvas.width, this.canvas.height);
 
-    this.starfield.paint(this.screen);
+    // this.starfield.paint(this.screen);
+    this.hstarfield.paint(this.screen);
     this.scroller1.paint(this.screen);
     this.scroller2.paint(this.screen);
 
@@ -43,7 +46,8 @@ class Demo1 {
     let charset:Charset = new Charset();
     await charset.load("charsets/charset_2_v1.png", this.root);
 
-    this.starfield = new StarField(this.canvas.width, this.canvas.height);
+    // this.starfield = new StarField(this.canvas.width, this.canvas.height);
+    this.hstarfield = new HorizontalStarField(this.canvas.width, this.canvas.height);
 
     this.scroller1 = new SinusScroller("Hello World! This is sinus scroll. Written in TypeScript for modern browsers. Have fun!",
       this.canvas.width, 200, (this.canvas.height / 2),

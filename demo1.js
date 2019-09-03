@@ -37,6 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 var Demo1 = (function () {
     function Demo1(root) {
         this.starfield = null;
+        this.hstarfield = null;
         this.scroller1 = null;
         this.scroller2 = null;
         this.canvas = null;
@@ -53,11 +54,11 @@ var Demo1 = (function () {
     };
     Demo1.prototype.loop = function () {
         var _this = this;
-        this.starfield.animate();
+        this.hstarfield.animate();
         this.scroller1.animate();
         this.scroller2.animate();
         this.screen.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.starfield.paint(this.screen);
+        this.hstarfield.paint(this.screen);
         this.scroller1.paint(this.screen);
         this.scroller2.paint(this.screen);
         requestAnimationFrame(function () { _this.loop(); });
@@ -72,7 +73,7 @@ var Demo1 = (function () {
                         return [4, charset.load("charsets/charset_2_v1.png", this.root)];
                     case 1:
                         _a.sent();
-                        this.starfield = new StarField(this.canvas.width, this.canvas.height);
+                        this.hstarfield = new HorizontalStarField(this.canvas.width, this.canvas.height);
                         this.scroller1 = new SinusScroller("Hello World! This is sinus scroll. Written in TypeScript for modern browsers. Have fun!", this.canvas.width, 200, (this.canvas.height / 2), charset);
                         this.scroller2 = new Scroller("Hello World! This is normal scroll.", this.canvas.width, this.canvas.height - 50, charset);
                         this.loop();

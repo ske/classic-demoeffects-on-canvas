@@ -1,5 +1,6 @@
 declare class Demo1 {
     starfield: StarField;
+    hstarfield: HorizontalStarField;
     scroller1: SinusScroller;
     scroller2: Scroller;
     root: HTMLElement;

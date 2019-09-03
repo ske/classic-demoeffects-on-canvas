@@ -5,8 +5,8 @@ declare class Charset {
     chars: {};
     charlist: string;
     constructor();
-    drawTo(buffer: ImageData, character: string, x: number, y: number): void;
-    extractChars(imageMap: CanvasRenderingContext2D): void;
+    draw(buffer: CanvasRenderingContext2D, character: string, x: number, y: number): void;
+    protected extract(imageMap: CanvasRenderingContext2D): void;
     get(char: string): ImageData;
     load(imagefile: string, root: HTMLElement): Promise<void>;
 }
